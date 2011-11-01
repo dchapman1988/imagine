@@ -1,0 +1,33 @@
+%h2= @album.name
+%h3 Galleriffic View
+
+#gallery.content
+  #controls.controls
+  .slideshow-container
+    #loading.loader
+    #slideshow.slideshow
+  #caption.caption-container
+#thumbs.navigation
+  %ul.thumbs.noscript
+    - @album.images.each do |image|
+      %li
+        = link_to image_tag(image.image_url(:thumb).to_s), image.try(:image_url), {:class => "thumb", :title => image.try(:title)}
+        .caption
+          Original
+          .image-title
+            = image.try(:title)
+          .image-desc 
+            = ""
+
+:javascript
+  // We only want these styles applied when javascript is enabled
+  $('div.navigation').css({'width' : '300px', 'float' : 'left'});
+  $('div.content').css('display', 'block');
+
+  $(document).ready(function() {        
+    // Initialize Minimal Galleriffic Gallery
+    $('#thumbs').galleriffic({
+      imageContainerSel:      '#slideshow',
+      controlsContainerSel:   '#controls'
+    });
+  });
